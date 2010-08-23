@@ -71,20 +71,13 @@ module AbnAmro
       private
       
       def calculated_signature
-        message = ''
-        message << order_id
-        message << currency
-        message << @params['amount']
-        message << payment_method
-        message << acceptance
-        message << status_code
-        message << card_number
-        message << payment_id
-        message << @params['NCERROR']
-        message << card_brand
-        message << Internetkassa.passphrase
+        params_in_shaout = [ 'AAVADDRESS', 'AAVCheck', 'AAVZIP', 'ACCEPTANCE', 'ALIAS', 'amount', 'BRAND', 'CARDNO', 'CCCTY', 'CN', 'COMPLUS', 'currency', 'CVCCheck', 'DCC_COMMPERCENTAGE', 'DCC_CONVAMOUNT', 'DCC_CONVCCY', 'DCC_EXCHRATE', 'DCC_EXCHRATESOURCE', 'DCC_EXCHRATETS', 'DCC_INDICATOR', 'DCC_MARGINPERCENTAGE', 'DCC_VALIDHOUS', 'DIGESTCARDNO', 'ECI', 'ED', 'ENCCARDNO', 'IP', 'IPCTY', 'NBREMAILUSAGE', 'NBRIPUSAGE', 'NBRIPUSAGE_ALLTX', 'NBRUSAGE', 'NCERROR', 'orderID', 'PAYID', 'PM', 'SCO_CATEGORY', 'SCORING', 'STATUS', 'TRXDATE', 'VC' ]
+        to_sign = {}
         
-        Digest::SHA1.hexdigest(message).upcase
+        params_in_shaout.each do |param|
+          to_sign.merge!(param.upcase => @params[param]) if @params[param].present?
+        end
+        Digest::SHA1.hexdigest(to_sign.sort.map{|row|row.join('=')}.push("").join(Internetkassa.passphrase)).upcase
       end
     end
   end

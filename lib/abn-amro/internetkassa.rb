@@ -87,7 +87,23 @@ module AbnAmro
     end
     
     def signature
-      Digest::SHA1.hexdigest("#{@order_id}#{@amount}#{@currency}#{merchant_id}#{passphrase}").upcase
+      # - Create a set of all attributes needed for the signature.
+      # - Remove all empty values from the set
+      # - Sort the set and append PSPID to the set
+      to_sign = {
+        'ACCEPTURL'    => @accept_url,
+        'AMOUNT'       => @amount,
+        'CANCELURL'    => @cancel_url,
+        'COM'          => @description,
+        'CURRENCY'     => @currency,
+        'DECLINEURL'   => @decline_url,
+        'EXCEPTIONURL' => @exception_url,
+        'LANGUAGE'     => @language,
+        'ORDERID'      => @order_id,
+        'PARAMPLUS'    => url_encoded_endpoint_params,
+        'PARAMVAR'     => @url_variable
+      }.delete_if { |row| row[1].nil? || row[1].to_s.empty? }.sort.push(['PSPID',merchant_id])
+      Digest::SHA1.hexdigest(to_sign.map{|row|row.join('=')}.push("").join(passphrase)).upcase
     end
     
     def url_encoded_endpoint_params
