@@ -32,6 +32,9 @@ module AbnAmro
     attr_accessor :order_id, :amount, :description, :currency, :language
     attr_accessor :accept_url, :decline_url, :exception_url, :cancel_url
     attr_accessor :url_variable, :endpoint_params
+    attr_accessor :customer_name, :customer_email, :customer_address
+    attr_accessor :customer_zipcode, :customer_town, :customer_country
+    attr_accessor :customer_telno
     
     def initialize(params = {})
       @params = {}
@@ -66,7 +69,14 @@ module AbnAmro
         :accepturl    => @accept_url,
         :declineurl   => @decline_url,
         :exceptionurl => @exception_url,
-        :cancelurl    => @cancel_url
+        :cancelurl    => @cancel_url,
+        :CN           => @customer_name,
+        :EMAIL        => @customer_email,
+        :owneraddress => @customer_address,
+        :ownerZIP     => @customer_zipcode,
+        :ownertown    => @customer_town,
+        :ownercty     => @customer_country,
+        :ownertelno   => @customer_telno
       ).delete_if { |key, value| value.nil? || value.to_s.empty? }
     end
     
@@ -94,12 +104,19 @@ module AbnAmro
         'ACCEPTURL'    => @accept_url,
         'AMOUNT'       => @amount,
         'CANCELURL'    => @cancel_url,
+        'CN'           => @customer_name,
         'COM'          => @description,
         'CURRENCY'     => @currency,
         'DECLINEURL'   => @decline_url,
+        'EMAIL'        => @customer_email,
         'EXCEPTIONURL' => @exception_url,
         'LANGUAGE'     => @language,
         'ORDERID'      => @order_id,
+        'OWNERADDRESS' => @customer_address,
+        'OWNERCTY'     => @customer_country,
+        'OWNERTELNO'   => @customer_telno,
+        'OWNERTOWN'    => @customer_town,
+        'OWNERZIP'     => @customer_zipcode,
         'PARAMPLUS'    => url_encoded_endpoint_params,
         'PARAMVAR'     => @url_variable
       }.delete_if { |row| row[1].nil? || row[1].to_s.empty? }.sort.push(['PSPID',merchant_id])
