@@ -23,7 +23,7 @@ module AbnAmro
       def acceptance;           @params['ACCEPTANCE']                           end
       def currency;             @params['currency']                             end
       def status_code;          @params['STATUS']                               end
-      def error_code;           @params['NCERROR'] if @params['NCERROR'] != '0' end
+      def error_code;           @params['NCERROR'] if @params['NCERROR'] != '0' && @params['NCERROR'] != '' end
       def signature;            @params['SHASIGN']                              end
       def customer_name;        @params['CN']                                   end
       def card_brand;           @params['BRAND']                                end
