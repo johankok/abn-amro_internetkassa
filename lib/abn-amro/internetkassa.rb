@@ -32,6 +32,7 @@ module AbnAmro
     attr_accessor :order_id, :amount, :description, :currency, :language
     attr_accessor :accept_url, :decline_url, :exception_url, :cancel_url
     attr_accessor :url_variable, :endpoint_params
+    attr_accessor :template
     attr_accessor :customer_name, :customer_email, :customer_address
     attr_accessor :customer_zipcode, :customer_town, :customer_country
     attr_accessor :customer_telno
@@ -118,7 +119,8 @@ module AbnAmro
         'OWNERTOWN'    => @customer_town,
         'OWNERZIP'     => @customer_zipcode,
         'PARAMPLUS'    => url_encoded_endpoint_params,
-        'PARAMVAR'     => @url_variable
+        'PARAMVAR'     => @url_variable,
+        'TP'           => @template
       }.delete_if { |row| row[1].nil? || row[1].to_s.empty? }.sort.push(['PSPID',merchant_id])
       Digest::SHA1.hexdigest(to_sign.map{|row|row.join('=')}.push("").join(passphrase)).upcase
     end
