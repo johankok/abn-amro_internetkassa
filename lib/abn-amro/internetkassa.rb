@@ -121,8 +121,9 @@ module AbnAmro
         'OWNERZIP'     => @customer_zipcode,
         'PARAMPLUS'    => url_encoded_endpoint_params,
         'PARAMVAR'     => @url_variable,
+        'PSPID'        => merchant_id,
         'TP'           => @template
-      }.delete_if { |row| row[1].nil? || row[1].to_s.empty? }.sort.push(['PSPID',merchant_id])
+      }.delete_if { |row| row[1].nil? || row[1].to_s.empty? }.sort
       Digest::SHA1.hexdigest(to_sign.map{|row|row.join('=')}.push("").join(passphrase)).upcase
     end
     
