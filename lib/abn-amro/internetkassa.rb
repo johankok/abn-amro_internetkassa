@@ -71,6 +71,7 @@ module AbnAmro
         :declineurl   => @decline_url,
         :exceptionurl => @exception_url,
         :cancelurl    => @cancel_url,
+        :TP           => @template,
         :CN           => @customer_name,
         :EMAIL        => @customer_email,
         :owneraddress => @customer_address,
