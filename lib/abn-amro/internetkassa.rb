@@ -30,6 +30,7 @@ module AbnAmro
     attr_reader :params
     
     attr_accessor :order_id, :amount, :description, :currency, :language
+    attr_accessor :brand, :payment_method
     attr_accessor :accept_url, :decline_url, :exception_url, :cancel_url
     attr_accessor :url_variable, :endpoint_params
     attr_accessor :template
@@ -67,6 +68,8 @@ module AbnAmro
         :SHASign      => signature,
         :PARAMVAR     => @url_variable,
         :PARAMPLUS    => url_encoded_endpoint_params,
+        :BRAND        => @brand,
+        :PM           => @payment_method,
         :accepturl    => @accept_url,
         :declineurl   => @decline_url,
         :exceptionurl => @exception_url,
@@ -105,6 +108,7 @@ module AbnAmro
       to_sign = {
         'ACCEPTURL'    => @accept_url,
         'AMOUNT'       => @amount,
+        'BRAND'        => @brand,
         'CANCELURL'    => @cancel_url,
         'CN'           => @customer_name,
         'COM'          => @description,
@@ -121,6 +125,7 @@ module AbnAmro
         'OWNERZIP'     => @customer_zipcode,
         'PARAMPLUS'    => url_encoded_endpoint_params,
         'PARAMVAR'     => @url_variable,
+        'PM'           => @payment_method,
         'PSPID'        => merchant_id,
         'TP'           => @template
       }.delete_if { |row| row[1].nil? || row[1].to_s.empty? }.sort
