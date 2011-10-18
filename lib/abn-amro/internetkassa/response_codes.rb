@@ -203,7 +203,7 @@ module AbnAmro
           "31101001"   => { :retry => false, :explanation => "Plafond transaction (majoré du bonus) dépassé" },
           "31111001"   => { :retry => false, :explanation => "Plafond mensuel (majoré du bonus) dépassé" },
           "31121001"   => { :retry => false, :explanation => "Plafond centre de facturation dépassé" },
-          "31131001"   => { :retry => false, :explanation => "Plafond entreprise dépassé" },
+          "31131001"   => { :retry => false, :explanation => "Plafond entreprise dépassé" }, 
           "31141001"   => { :retry => false, :explanation => "Code MCC du fournisseur non autorisé pour la carte" },
           "31151001"   => { :retry => false, :explanation => "Numéro SIRET du fournisseur non autorisé pour la carte" },
           "31161001"   => { :retry => false, :explanation => "This is not a valid online banking account" },
