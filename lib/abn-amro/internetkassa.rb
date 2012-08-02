@@ -127,8 +127,10 @@ module AbnAmro
         'PARAMVAR'     => @url_variable,
         'PM'           => @payment_method,
         'PSPID'        => merchant_id,
+        'TITLE'        => @description,        
         'TP'           => @template
-      }.delete_if { |row| row[1].nil? || row[1].to_s.empty? }.sort
+      }.delete_if { |key, value| value.nil? || value.to_s.empty? }.sort
+
       Digest::SHA1.hexdigest(to_sign.map{|row|row.join('=')}.push("").join(passphrase)).upcase
     end
     
