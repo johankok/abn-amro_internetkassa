@@ -126,8 +126,7 @@ module AbnAmro
         'PARAMPLUS'    => url_encoded_endpoint_params,
         'PARAMVAR'     => @url_variable,
         'PM'           => @payment_method,
-        'PSPID'        => merchant_id,
-        'TITLE'        => @description,        
+        'PSPID'        => merchant_id,     
         'TP'           => @template
       }.delete_if { |key, value| value.nil? || value.to_s.empty? }.sort
 
