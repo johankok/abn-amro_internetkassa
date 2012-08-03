@@ -5,7 +5,7 @@ module AbnAmro
         form_tag(AbnAmro::Internetkassa.service_url) do
           result = internetkassa_instance.data.map { |name, value| hidden_field_tag(name, value, :id => nil) }
           result << capture(&block) if block_given?
-          "\n#{result.join("\n")}\n"
+          result.join("\n").html_safe
         end
       end
     end
