@@ -1,17 +1,14 @@
 require File.expand_path('../test_helper', __FILE__)
 
 describe "AbnAmro::Internetkassa::Helpers", ActionView::TestCase do
-  tests AbnAmro::Internetkassa::Helpers
   
   before do
-    @controller = TestController.new
-    
     @instance = AbnAmro::Internetkassa.new(
-      :order_id => 123,
+      :orderid => 123,
       :amount => 1000,
       :description => "HappyHardcore vol. 123 - the ballads",
       :endpoint_url => "http://example.com/payments",
-      :TITLE => 'HappyHardcore vol. 123 - the ballads'
+      :title => 'HappyHardcore vol. 123 - the ballads'
     )
     
     # make sure we don't get bitten by sorting
@@ -25,21 +22,17 @@ describe "AbnAmro::Internetkassa::Helpers", ActionView::TestCase do
   end
   
   it "should create a form with data from a AbnAmro::Internetkassa instance and yield" do
-    internetkassa_form_tag(@instance) { concat submit_tag('Betaal') }
+    form_tag = internetkassa_form_tag(@instance) { submit_tag('Betaal') }
+
+    form_start = %{<form action="#{AbnAmro::Internetkassa.service_url}" method="post">} 
+    form_end   = '</form>'
     
-    expected = [%{<form action="#{AbnAmro::Internetkassa.service_url}" method="post">}]
-    @instance.data.each do |name, value|
-      expected << %{<input name="#{name}" type="hidden" value="#{value}" />}
+    inputs = @instance.data.map do |name, value|
+      %{<input name="#{name}" type="hidden" value="#{value}" />}
     end
-    expected << %{<input name="commit" type="submit" value="Betaal" />}
-    expected << "</form>"
     
-    assert_dom_equal expected.join("\n"), output_buffer
-  end
-  
-  private
-  
-  def method_missing(method, *args, &block)
-    @controller.send(method, *args, &block)
+    inputs << %{<input name="commit" type="submit" value="Betaal" />}    
+    
+    assert_dom_equal "#{form_start}#{inputs.join("\n")}#{form_end}", form_tag
   end
 end

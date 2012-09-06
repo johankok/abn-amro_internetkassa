@@ -1,6 +1,8 @@
 require 'rubygems' rescue LoadError
+require 'bundler/setup'
 require 'test/spec'
 require 'mocha'
+require 'debugger'
 
 require File.expand_path('../helpers/view_helper', __FILE__)
 

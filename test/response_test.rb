@@ -31,7 +31,7 @@ describe "AbnAmro::Internetkassa::Response, in general" do
     @response.payment_method.should == 'iDEAL'
     @response.acceptance.should     == '0000000000'
     @response.status_code.should    == '9'
-    @response.signature.should      == '7537DD222E35EE9F9842921BD90C2CBFCFA59466'
+    @response.signature.should      == 'D385E7C290062CDBF121CD711F22C9EBF7A3DBC9'
     @response.currency.should       == 'EUR'
   end
   
@@ -53,24 +53,28 @@ describe "AbnAmro::Internetkassa::Response, in general" do
   end
   
   it "should return the transaction date as a Date instance" do
-    @response.transaction_date.should == Date.parse('02/19/2009')
+    @response.transaction_date.should == Date.strptime('02/19/2009', '%m/%d/%Y')
   end
   
   it "should create a SHA1 signature for the message" do
-    message =  @response.order_id
-    message += @response.currency
-    message += @response.params['amount']
-    message += @response.payment_method
-    message += @response.acceptance
-    message += @response.status_code
-    message += @response.card_number
-    message += @response.payment_id
-    message += @response.params['NCERROR']
-    message += @response.card_brand
+    message = [
+      ['ACCEPTANCE' , @response.acceptance],
+      ['AMOUNT'     , @response.params['amount']], 
+      ['BRAND'      , @response.card_brand], 
+      ['CARDNO'     , @response.card_number], 
+      ['CN'         , @response.customer_name],
+      ['CURRENCY'   , @response.currency], 
+      ['IP'         , @response.params['IP']], 
+      ['NCERROR'    , @response.params['NCERROR']], 
+      ['ORDERID'    , @response.order_id],
+      ['PAYID'      , @response.payment_id],
+      ['PM'         , @response.payment_method],
+      ['STATUS'     , @response.status_code],
+      ['TRXDATE'    , @response.params['TRXDATE']]
+    ]
     
-    message += AbnAmro::Internetkassa.passphrase
-    
-    @response.send(:calculated_signature).should == Digest::SHA1.hexdigest(message).upcase
+    digest = Digest::SHA1.hexdigest(message.map{|row|row.join('=')}.push("").join(AbnAmro::Internetkassa.passphrase)).upcase    
+    @response.send(:calculated_signature).should == digest
   end
   
   it "should return that the signature matches the calculated_signature" do
