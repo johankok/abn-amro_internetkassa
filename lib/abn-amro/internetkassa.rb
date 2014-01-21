@@ -128,7 +128,7 @@ module AbnAmro
         'PM'           => @payment_method,
         'PSPID'        => merchant_id,
         'TP'           => @template
-      }.delete_if { |row| row[1].nil? || row[1].to_s.empty? }.sort
+      }.delete_if{ |k,v| v.nil? || v.to_s.empty? }.sort
       Digest::SHA1.hexdigest(to_sign.map{|row|row.join('=')}.push("").join(passphrase)).upcase
     end
     
