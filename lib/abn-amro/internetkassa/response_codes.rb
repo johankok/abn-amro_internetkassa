@@ -1,4 +1,4 @@
-# encoding: UTF-8
+# encoding: utf-8
 module AbnAmro
   class Internetkassa
     class Response
@@ -14,7 +14,7 @@ module AbnAmro
           "7"  => "Payment deleted",
           "8"  => "Refund",
           "9"  => "Payment requested",
-          
+
           # intermediate or abnormal statuses
           "41" => "Waiting client payment",
           "51" => "Authorization waiting",
@@ -42,7 +42,7 @@ module AbnAmro
           "95" => "Payment processed by merchant",
           "99" => "Being processed",
         }
-        
+
         ERROR_CODES = {
           "0020001002" => { :retry => true,  :explanation => "Authorization failed, please retry" },
           "0020001003" => { :retry => true,  :explanation => "Authorization failed, please retry" },
@@ -204,7 +204,7 @@ module AbnAmro
           "31101001"   => { :retry => false, :explanation => "Plafond transaction (majoré du bonus) dépassé" },
           "31111001"   => { :retry => false, :explanation => "Plafond mensuel (majoré du bonus) dépassé" },
           "31121001"   => { :retry => false, :explanation => "Plafond centre de facturation dépassé" },
-          "31131001"   => { :retry => false, :explanation => "Plafond entreprise dépassé" }, 
+          "31131001"   => { :retry => false, :explanation => "Plafond entreprise dépassé" },
           "31141001"   => { :retry => false, :explanation => "Code MCC du fournisseur non autorisé pour la carte" },
           "31151001"   => { :retry => false, :explanation => "Numéro SIRET du fournisseur non autorisé pour la carte" },
           "31161001"   => { :retry => false, :explanation => "This is not a valid online banking account" },

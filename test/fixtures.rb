@@ -13,7 +13,7 @@ RESPONSES = {
     "TRXDATE"    => "02/19/09",
     "NCERROR"    => "0",
     "ED"         => "",
-    "SHASIGN"    => "7537DD222E35EE9F9842921BD90C2CBFCFA59466",
+    "SHASIGN"    => "D385E7C290062CDBF121CD711F22C9EBF7A3DBC9",
     "currency"   => "EUR"
   },
   
@@ -31,7 +31,7 @@ RESPONSES = {
     "TRXDATE"    => "02/19/09",
     "NCERROR"    => "30001001",
     "ED"         => "",
-    "SHASIGN"    => "BC9E821662DFD1EBC6E23BF044F6957796076B80",
+    "SHASIGN"    => "0397393DD2F4BD4F6D7ED5B48F926DCDAC05A35F",
     "currency"   => "EUR"
   },
   
@@ -49,7 +49,7 @@ RESPONSES = {
     "TRXDATE" => "02/19/09",
     "NCERROR" => "30171001",
     "ED" => "",
-    "SHASIGN" => "734AB5AD3033C46E1F69CBFB91EDD0AD34E7368D",
+    "SHASIGN" => "ECECAFF55A72A2E4CE92AA39F87E948A07E8F46A",
     "currency" => "EUR"
   },
   
@@ -68,7 +68,7 @@ RESPONSES = {
     "TRXDATE"    => "02/19/09",
     "NCERROR"    => "20002001",
     "ED"         => "",
-    "SHASIGN"    => "614F540CC51607DA44CB8D2403B8DF1781B9712C",
+    "SHASIGN"    => "92AE23CE2A05676FA205883E710A79D33D60ADB3",
     "currency"   => "EUR"
   }
 }

@@ -5,6 +5,8 @@ module AbnAmro
     class Response
       class SignatureInvalidError < StandardError; end
       
+      SHAOUT_KEYS = [ 'AAVADDRESS', 'AAVCheck', 'AAVZIP', 'ACCEPTANCE', 'ALIAS', 'amount', 'BRAND', 'CARDNO', 'CCCTY', 'CN', 'COMPLUS', 'currency', 'CVCCheck', 'DCC_COMMPERCENTAGE', 'DCC_CONVAMOUNT', 'DCC_CONVCCY', 'DCC_EXCHRATE', 'DCC_EXCHRATESOURCE', 'DCC_EXCHRATETS', 'DCC_INDICATOR', 'DCC_MARGINPERCENTAGE', 'DCC_VALIDHOUS', 'DIGESTCARDNO', 'ECI', 'ED', 'ENCCARDNO', 'IP', 'IPCTY', 'NBREMAILUSAGE', 'NBRIPUSAGE', 'NBRIPUSAGE_ALLTX', 'NBRUSAGE', 'NCERROR', 'orderID', 'PAYID', 'PM', 'SCO_CATEGORY', 'SCORING', 'STATUS', 'TRXDATE', 'VC' ]
+      
       attr_reader :params
       
       def initialize(params)
@@ -17,25 +19,25 @@ module AbnAmro
       
       # attributes
       
-      def order_id;             @params['orderID']                              end
-      def payment_id;           @params['PAYID']                                end
-      def payment_method;       @params['PM']                                   end
-      def acceptance;           @params['ACCEPTANCE']                           end
-      def currency;             @params['currency']                             end
-      def status_code;          @params['STATUS']                               end
-      def error_code;           @params['NCERROR'] if @params['NCERROR'] != '0' && @params['NCERROR'] != '' end
-      def signature;            @params['SHASIGN']                              end
-      def customer_name;        @params['CN']                                   end
-      def card_brand;           @params['BRAND']                                end
-      def card_number;          @params['CARDNO']                               end
-      def card_expiration_date; @params['ED']                                   end
+      def order_id;             params['orderID']                              end
+      def payment_id;           params['PAYID']                                end
+      def payment_method;       params['PM']                                   end
+      def acceptance;           params['ACCEPTANCE']                           end
+      def currency;             params['currency']                             end
+      def status_code;          params['STATUS']                               end
+      def error_code;           params['NCERROR'] if params['NCERROR'] != '0' && params['NCERROR'] != '' end
+      def signature;            params['SHASIGN']                              end
+      def customer_name;        params['CN']                                   end
+      def card_brand;           params['BRAND']                                end
+      def card_number;          params['CARDNO']                               end
+      def card_expiration_date; params['ED']                                   end
       
       def amount
-        @amount ||= (@params['amount'].to_f * 100).to_i
+        @amount ||= (params['amount'].to_f * 100).to_i
       end
       
       def transaction_date
-        @transaction_date ||= Date.parse(@params['TRXDATE'], true)
+        @transaction_date ||= Date.strptime(params['TRXDATE'], '%m/%d/%y') if params['TRXDATE']
       end
       
       # methods
@@ -71,12 +73,12 @@ module AbnAmro
       private
       
       def calculated_signature
-        params_in_shaout = [ 'AAVADDRESS', 'AAVCheck', 'AAVZIP', 'ACCEPTANCE', 'ALIAS', 'amount', 'BRAND', 'CARDNO', 'CCCTY', 'CN', 'COMPLUS', 'currency', 'CVCCheck', 'DCC_COMMPERCENTAGE', 'DCC_CONVAMOUNT', 'DCC_CONVCCY', 'DCC_EXCHRATE', 'DCC_EXCHRATESOURCE', 'DCC_EXCHRATETS', 'DCC_INDICATOR', 'DCC_MARGINPERCENTAGE', 'DCC_VALIDHOUS', 'DIGESTCARDNO', 'ECI', 'ED', 'ENCCARDNO', 'IP', 'IPCTY', 'NBREMAILUSAGE', 'NBRIPUSAGE', 'NBRIPUSAGE_ALLTX', 'NBRUSAGE', 'NCERROR', 'orderID', 'PAYID', 'PM', 'SCO_CATEGORY', 'SCORING', 'STATUS', 'TRXDATE', 'VC' ]
         to_sign = {}
         
-        params_in_shaout.each do |param|
-          to_sign.merge!(param.upcase => @params[param]) if @params[param].present?
+        SHAOUT_KEYS.each do |param|
+          to_sign.merge!(param.upcase => params[param]) unless params[param].nil? || params[param].to_s.empty?
         end
+
         Digest::SHA1.hexdigest(to_sign.sort.map{|row|row.join('=')}.push("").join(Internetkassa.passphrase)).upcase
       end
     end

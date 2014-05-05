@@ -1,8 +1,8 @@
 Gem::Specification.new do |spec|
   spec.name = 'internetkassa'
-  spec.version = '0.9.4'
+  spec.version = '1.0.0'
   
-  spec.homepage = 'https://github.com/Fingertips/abn-amro_internetkassa/tree/master'
+  spec.homepage = 'https://github.com/moiristo/abn-amro_internetkassa.git'
   spec.description = spec.summary = %{A library to make online payments using ABN-AMRO (Dutch bank) Internetkassa.}
   
   spec.author = 'Eloy Duran'
@@ -19,7 +19,6 @@ Gem::Specification.new do |spec|
     rails/init.rb
     test/fixtures.rb
     test/helpers/fixtures_helper.rb
-    test/helpers/view_helper.rb
     test/helpers_test.rb
     test/internetkassa_test.rb
     test/internetkassa_remote_test.rb
@@ -33,7 +32,13 @@ Gem::Specification.new do |spec|
   spec.rdoc_options << '--charset=utf-8' << '--main=README.rdoc'
   
   if spec.respond_to?(:add_development_dependency)
-    spec.add_development_dependency 'test-spec'
-    spec.add_development_dependency 'mocha'
+    spec.add_development_dependency 'rails'
+    spec.add_development_dependency 'rake' 
+    spec.add_development_dependency 'test-unit'
+    spec.add_development_dependency 'test-spec'           
+    spec.add_development_dependency 'mocha', '>= 0.12.4'
+    spec.add_development_dependency 'rest-client'
+    spec.add_development_dependency 'hpricot'       
+    spec.add_development_dependency 'debugger'      
   end
 end

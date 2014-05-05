@@ -1,25 +1,25 @@
 require File.expand_path('../test_helper', __FILE__)
 
-require 'rest'
+require 'rest_client'
 require 'hpricot'
 
 describe "AbnAmro::Internetkassa, when remote testing" do
   before do
     @instance = AbnAmro::Internetkassa.new(
-      :order_id => Time.now.to_i.to_s,
+      :orderid => Time.now.to_i.to_s,
       :amount => 1000,
       :description => "HappyHardcore vol. 123 - the ballads",
-      :TITLE => 'HappyHardcore vol. 123 - the ballads'
+      :title => 'HappyHardcore vol. 123 - the ballads'
     )
   end
   
   it "should have the right data to make a successful POST request" do
     response = post(AbnAmro::Internetkassa.service_url, @instance.data)
-    response.should.be.success
-    
+    response.code.should == 200
+
     parse_response(response).should == {
       :beneficiary => 'Fingertips BV',
-      :order_id =>    @instance.order_id,
+      :orderid =>    @instance['orderid'],
       :amount =>      '10.00 EUR',
       :title =>       'HappyHardcore vol. 123 - the ballads'
     }
@@ -28,8 +28,7 @@ describe "AbnAmro::Internetkassa, when remote testing" do
   private
   
   def post(uri, values)
-    body = values.map { |k,v| "#{k}=#{v.to_s.gsub(' ', '%20')}" }.join('&')
-    REST.post(uri, body)
+    RestClient.post(uri, values)
   end
   
   def parse_response(response)
@@ -41,7 +40,7 @@ describe "AbnAmro::Internetkassa, when remote testing" do
       
       key = case cols.first.inner_text
       when /Ordernummer/
-        :order_id
+        :orderid
       when /Totaalbedrag/
         :amount
       when /Begunstigde/
